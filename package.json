@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Genice1126/plugin-server/issues"
   },
-  "homepage": "https://github.com/Genice1126/plugin-server#readme"
+  "homepage": "https://github.com/Genice1126/plugin-server#readme",
+  "dependencies": {
+    "debug": "^4.1.0"
+  }
 }
