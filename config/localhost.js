@@ -2,7 +2,7 @@
 //本地调试配置
 module.exports = {
     
-    redisServer : {
+    redis_server : {
         host : "localhost",
         port : 6379,
         return_buffers : false, //true 返回的数据为buffer，

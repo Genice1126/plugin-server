@@ -4,8 +4,13 @@
 
  class RedisServer {
 
-    constructor(){
-        this.client = redis.createClient(config_plugin.redisServer);
+    constructor(config){
+        this.config = Object.assign({
+            host : config_plugin.redis_server.host,
+            port : config_plugin.redis_server.port,
+            db : 0,
+        },config)
+        this.client = redis.createClient(this.config);
     }
 
     /**
