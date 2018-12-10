@@ -14,6 +14,7 @@ class MessageMQ extends EventEmitter{
         },config)
     }
 
+    
     async connect (url){
         if(url) this.config.url = url;
         this.connection = await amqplib.connect(this.config.url , this.config.socket);
