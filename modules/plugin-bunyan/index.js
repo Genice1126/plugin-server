@@ -1,7 +1,5 @@
 
-const bunyan = require('bunyan');
-const fs = require('fs');
-const path = require('path');
+
 
 /**
  * 日志系统(想要什么)
@@ -40,21 +38,74 @@ const path = require('path');
  * bunyan写日志 redis定时任务 mongo nodemailer
  * 
  */
-class LogSystem {
+//是否开启 名称 是否支持自定义 是否写文件
 
-  //构造函数
-  constructor(path){
-  
-  }
+var log = bunyan.createLogger({
+  name: "",                     // Required
+  level: "",      // Optional, see "Levels" section
+  stream: "",           // Optional, see "Streams" section
+  streams: "",   // Optional, see "Streams" section
+  serializers: "", // Optional, see "Serializers" section
 
-  //递归创建目录
-  _create_dir(dirname){
-    if(fs.existsSync(dirname)){
-      return true
-    }else if(this._create_dir(path.dirname(dirname))){
-      fs.mkdirSync(dirname);
-      return true
-    }
-  }
+  // Any other fields are added to all log records as is.
+  foo: 'bar',
+});
 
-}
+product-log
+collect-log
+analyze-log
+
+
+// class BunyanPlugin {
+
+//   constructor (config){
+//     this.config = Object.assign({
+//       name : "",
+//       streams : [{
+        
+//       }],
+//       serializers : {
+//         [this._init_serializer_field] : this._init_serializer_val
+//       },
+//     } , config);
+
+//     /**
+//      * 
+//      */
+//     Bunyan.createLogger({
+//       name : "",
+//       level : "",
+//       streams : "",
+//       serializers : "",
+
+//     })
+
+
+
+//   }
+
+//   [_init_serializer_field](field){
+//     return field;
+//   }
+
+//   [_init_serializer_val](val){
+//     return val;
+//   }
+
+//   _create_dir(){
+//     if(fs.existsSync(dirname)){
+//       return true
+//     }else if(this._create_dir(path.dirname(dirname))){
+//       fs.mkdirSync(dirname);
+//       return true
+//     }
+//   }
+
+//   info(...arg){
+    
+//   }
+
+// }
+
+// exports = module.exports = BunyanPlugin;
+
