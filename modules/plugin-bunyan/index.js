@@ -28,6 +28,9 @@
 
 /**
  * 实现(怎么做)
+ * let Bunyan = new Bunyan({name : "app"});
+ * Bunyan.info({custom} , {record})
+ * 
  * 
  * 1.Bunyan.info(type="数据来源",data="{数据}",date="采集日期",) 
  * 2.Bunyan.error(type="数据来源",data="数据",date="采集日期",)
@@ -40,72 +43,38 @@
  */
 //是否开启 名称 是否支持自定义 是否写文件
 
-var log = bunyan.createLogger({
-  name: "",                     // Required
-  level: "",      // Optional, see "Levels" section
-  stream: "",           // Optional, see "Streams" section
-  streams: "",   // Optional, see "Streams" section
-  serializers: "", // Optional, see "Serializers" section
+// var log = bunyan.createLogger({
+//   name: "",                     // Required
+//   level: "",      // Optional, see "Levels" section
+//   stream: "",           // Optional, see "Streams" section
+//   streams: "",   // Optional, see "Streams" section
+//   serializers: "", // Optional, see "Serializers" section
 
-  // Any other fields are added to all log records as is.
-  foo: 'bar',
-});
-
-product-log
-collect-log
-analyze-log
+//   // Any other fields are added to all log records as is.
+//   foo: 'bar',
+// });
 
 
-// class BunyanPlugin {
+let config = {
+  info : {
+    is_open : "",
+    path : "",
+    level : ""
+  },
+  warn : {
 
-//   constructor (config){
-//     this.config = Object.assign({
-//       name : "",
-//       streams : [{
-        
-//       }],
-//       serializers : {
-//         [this._init_serializer_field] : this._init_serializer_val
-//       },
-//     } , config);
+  },
+  error : {
 
-//     /**
-//      * 
-//      */
-//     Bunyan.createLogger({
-//       name : "",
-//       level : "",
-//       streams : "",
-//       serializers : "",
+  }
+}
 
-//     })
+function P (){
 
+}
 
+Object.keys().forEach( key => {
 
-//   }
+})
 
-//   [_init_serializer_field](field){
-//     return field;
-//   }
-
-//   [_init_serializer_val](val){
-//     return val;
-//   }
-
-//   _create_dir(){
-//     if(fs.existsSync(dirname)){
-//       return true
-//     }else if(this._create_dir(path.dirname(dirname))){
-//       fs.mkdirSync(dirname);
-//       return true
-//     }
-//   }
-
-//   info(...arg){
-    
-//   }
-
-// }
-
-// exports = module.exports = BunyanPlugin;
 

@@ -8,45 +8,21 @@ const sys_config = require('../../config');
 //....../system/info/xxxx-xx-xx.log
 //....../system/error/xxxx-xx-xx.log
 
+//new LogProduct({name : "app"});
 
-class LogProduct {
+
+class P {
+
   constructor (config){
-    
-    this.config = {};
-    this.config.name = config.name || "";
-    if(!config.name || config.name.constructor !== String) this.config.name = 'default';
-    let path1 = sys_config.log_path + '/' + this.config.name + '/';
-    console.log('path==>' , path1);
-    this._create_dir(path1);
-    
-    this.config.streams = [{
-        level : 'info',
-        path : path1 + 'info.log'
-      },
-      {
-        level : 'error',
-        path : path1 + 'error.log'
-      }
-    ]
-    
-    this.config.serializer = {
-      [this._init_serializer_field] : this._init_serializer_val 
-    };
-    console.log(this.config);
 
-    this.client = Bunyan.createLogger(this.config);
-    
+    this.config = Object.assign({
+      name : "default",
+    },config)
+    this.path = path.join(sys_config.log_path , this.config.name , );
+
   }
 
-  _init_serializer_field(field){
-    return field;
-  }
-
-  _init_serializer_val(val){
-    return val
-  }
-
-  _create_dir(dirname){
+  _create_dir (dirname){
     if(fs.existsSync(dirname)){
       return true
     }else if(this._create_dir(path.dirname(dirname))){
@@ -55,13 +31,6 @@ class LogProduct {
     }
   }
 
-  info(...command){
-    return this.client.info(...command);
-  }
-  error(...command){
-    return this.client.error(...command);
-  }
-}
 
-let log = new LogProduct({name : 'test'});
-log.info({type : 1 , command : 2} , {ctx : 'ctx' , aaa : 1});
+
+}
