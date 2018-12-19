@@ -10,6 +10,15 @@ module.exports = {
         disable_resubscribing : false, //true 断开连接后客户端不会重新订阅
     },
 
-    log_path : "/Users/liutao/"
+    log_config : {
+      info : {
+        level : 'info',
+        path : '/Users/liutao/log'
+      },
+      error : {
+        level : 'error',
+        path : '/Users/liutao/log'
+      }
+    }
 
 }
