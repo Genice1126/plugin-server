@@ -1,82 +1,86 @@
 
 
-const Bunyan = require('bunyan');
+const bunyan = require('bunyan');
 const path = require('path');
 const fs = require('fs');
-const SYS_CONFIG = require('../../config');
+const SYS_CONFIG = require('../../config').daily_config;
 
-function ProducerLog (custom_config){
-  this.custom_config = Object.assign({
-    name : "default"
-  },custom_config);
-  createDir();
+/**
+ * Function
+ * @param {自定义配置} custom_config 
+ */
+function DailyRecord(custom_config){
+  this.config = Object.assign({
+    name : "default",
+    level : "info"
+  } , custom_config);
+  create_dir(this.config.name);
 }
 
 /**
- * prototype fn
- * @param {key} key 
- * @param {val} val 
+ * 
+ * @param {自定义名称} p_name 
  */
-function log_constructor_fn(key , val){
-  ProducerLog.call(this);
-  let log_path = (val.path) ? path.join(val.path , key + '.log') : "";
-  // let log_level = (val.level) ? val.level : key;
-  return function (...param){
-  
-    if(log_path){
-      this.custom_config.streams = [{path : log_path}]
-    }else{
-      this.custom_config.stream = process.stdout;
-    }
-
-    if(param.length > 1){
-      this.custom_config.serializers = {
-        [_init_serializer] : _init_serializer
-      }
-    }
-    if(!this.bunyan_client) this.bunyan_client = Bunyan.createLogger(this.custom_config);
-    let param_pop = param.pop();
-    param_pop = (param_pop.__proto__ === String) ? param_pop : JSON.stringify(param_pop);
-    this.bunyan_client[key].call(this.bunyan_client , ...param , param_pop);
-    
-  }
-
+function create_dir(p_name){
+  common_path = path.join(SYS_CONFIG.path , p_name);
+  _mkdir(common_path);
 }
 
+
 /**
- * create dir
- * @param {dirname} dirname 
+ * 
+ * @param {路径} dirname 
  */
-function mkdirs(dirname){
+function _mkdir(dirname){
   if(fs.existsSync(dirname)){
     return true;
-  }else if(mkdirs(path.dirname(dirname))){
+  }else if(_mkdir(path.dirname(dirname))){
     fs.mkdirSync(dirname);
     return true;
   }
 }
 
 /**
- * create dir
- */
-function createDir(){
-  Object.keys(SYS_CONFIG.log_config).forEach(function(item){
-    mkdirs(SYS_CONFIG.log_config[item].path);
-  })
-}
-
-/**
- * serializer field init
+ * 
  * @param {field} field 
  */
-function _init_serializer (field){
+function _init_serializer(field){
   return field;
 }
 
-Object.keys(SYS_CONFIG.log_config).forEach(key => {
-  ProducerLog.prototype[key] = log_constructor_fn(key , SYS_CONFIG.log_config[key]);
+
+/**
+ * core prototype Function
+ * @param {key} k 
+ * @param {value} v 
+ */
+function daily_constructor_fn(k , v){
+  DailyRecord.call(this);
+  return function (...content){
+    if(v.write_file) {
+      this.config.streams = [{path : path.join(SYS_CONFIG.path , this.config.name , k+'.log') , level : v.level}];
+    }else{
+      this.config.stream = process.stdout;
+    }
+    if(content.length > 1){
+      this.config.serializers = {
+        [_init_serializer] : _init_serializer
+      }
+    }
+    if(!this.client) this.client = bunyan.createLogger(this.config);
+    let content_pop = content.pop();
+    content_pop = (content_pop.__proto__ === String) ? content_pop : JSON.stringify(content_pop);
+    this.client[k].call(this.client , ...content , content_pop);
+  }
+
+}
+
+Object.keys(SYS_CONFIG.deplay).forEach(item => {
+  DailyRecord.prototype[item] = daily_constructor_fn(item , SYS_CONFIG.deplay[item]);
 })
 
-exports = module.exports = ProducerLog;
+exports = module.exports = DailyRecord;
+
+
 
 
