@@ -1,5 +1,4 @@
 
-
 const bunyan = require('bunyan');
 const path = require('path');
 const fs = require('fs');
@@ -58,7 +57,13 @@ function daily_constructor_fn(k , v){
   DailyRecord.call(this);
   return function (...content){
     if(v.write_file) {
-      this.config.streams = [{path : path.join(SYS_CONFIG.path , this.config.name , k+'.log') , level : v.level}];
+      this.config.streams = [{
+        type : 'rotating-file',
+        period : '1h',
+        count : 2,
+        path : path.join(SYS_CONFIG.path , this.config.name , k +'.log'), 
+        level : v.level,
+      }];
     }else{
       this.config.stream = process.stdout;
     }
