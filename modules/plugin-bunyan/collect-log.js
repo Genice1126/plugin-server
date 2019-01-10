@@ -56,6 +56,13 @@ function _init_serializer(field){
 function daily_constructor_fn(k , v){
   DailyRecord.call(this);
   return function (...content){
+
+    if(content.length >= 2) throw new Error("....log param number is error , max length is two....");
+
+    for(let i of content){
+      if(i.constructor !== Object) throw new Error("....log param is error....");
+    }
+
     if(v.write_file) {
       this.config.streams = [{
         type : 'rotating-file',
