@@ -14,7 +14,7 @@ const MAP_LIST = {
 
 
 function spcial_operation_save(connection){
-  return function (schemaName , model){
+  return async function (schemaName , model){
     let _box = {};
     for(let i in model){
       _box[i] = MAP_LIST[typeof model[i]]
@@ -22,14 +22,21 @@ function spcial_operation_save(connection){
     let schema = new mongoose.Schema(_box);
     let Model = connection.model(schemaName , schema , schemaName);
     let res = new Model(model);
-    res.save();
+    await res.save();
     return true;
   }
 }
 
 function spcial_operation_find(connection){
   return async function (schemaName , condition){
-
+    let _box = {};
+    for(let i in condition){
+      _box[i] = MAP_LIST[typeof condition[i]]
+    }
+    let schema = new mongoose.Schema(_box);
+    let Model = connection.model(schemaName , schema , schemaName);
+    let res = await Model.find(condition);
+    return res;
   }
 }
 
@@ -61,6 +68,7 @@ Object.keys(config).forEach(item => {
       }
     }
     module.exports[i + '_all_save'] = spcial_operation_save(connection);
+    module.exports[i + '_all_find'] = spcial_operation_find(connection);
   }
   
 })
