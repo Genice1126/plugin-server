@@ -2,7 +2,7 @@
 //本地调试配置
 module.exports = {
     
-  redis_server : {
+  redisServer : {
     host : "localhost",
     port : 6379,
     return_buffers : false, //true 返回的数据为buffer，
@@ -10,7 +10,7 @@ module.exports = {
     disable_resubscribing : false, //true 断开连接后客户端不会重新订阅
   },
 
-  mongoose_config : {
+  mongooseConfig : {
     mysql_server_1 : {
       userName : "genice",
       password : "genice",
@@ -36,8 +36,13 @@ module.exports = {
   },
 
 
-  daily_config : {
+  dailyConfig : {
     path : "/Users/liutao/log",
+    period : "1h",
+    period_count : 7,
+    stream_type : {
+      rotating : "rotating-file"
+    },
     deplay : {
       info : {
         level : 'info',

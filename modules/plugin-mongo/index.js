@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const path = require('path');
 const fs = require('fs');
-const config = require('../../config').mongoose_config;
+const config = require('../../config').mongooseConfig;
 
 const MAP_LIST = {
   string : String,
@@ -12,14 +12,18 @@ const MAP_LIST = {
   object : Object
 };
 
-
-function spcial_operation_save(connection){
-  return async function (schemaName , model){
-    let _box = {};
-    for(let i in model){
-      _box[i] = MAP_LIST[typeof model[i]]
-    }
-    let schema = new mongoose.Schema(_box);
+/**
+ * 不用schema 任意插入任何对象
+ * @param {连接对象} connection 
+ * {schema} 表名
+ * {model} 插入的数据
+ * 
+ */
+function spcialOperationSave(connection) {
+  return async(schemaName , model) => {
+    let box = {};
+    for(let i in model) box[i] = MAP_LIST[typeof model[i]];
+    let schema = new mongoose.Schema(box);
     let Model = connection.model(schemaName , schema , schemaName);
     let res = new Model(model);
     await res.save();
@@ -27,19 +31,23 @@ function spcial_operation_save(connection){
   }
 }
 
-function spcial_operation_find(connection){
-  return async function (schemaName , condition){
-    let _box = {};
-    for(let i in condition){
-      _box[i] = MAP_LIST[typeof condition[i]]
-    }
-    let schema = new mongoose.Schema(_box);
+/**
+ * 不用schema 查询自定义表中的数据
+ * @param {连接对象} connection 
+ * {schema} 表名
+ * {condition} 查询条件
+ * return Array
+ */
+function spcialOperationFind(connection){
+  return async(schemaName , condition) => {
+    let box = {};
+    for(let i in condition) box[i] = MAP_LIST[typeof condition[i]];
+    let schema = new mongoose.Schema(box);
     let Model = connection.model(schemaName , schema , schemaName);
     let res = await Model.find(condition);
     return res;
   }
 }
-
 
 Object.keys(config).forEach(item => {
   for(let i of config[item].library){
@@ -67,8 +75,8 @@ Object.keys(config).forEach(item => {
         module.exports[schemaName] = connection.model(schemaName, model , schemaName);
       }
     }
-    module.exports[i + '_all_save'] = spcial_operation_save(connection);
-    module.exports[i + '_all_find'] = spcial_operation_find(connection);
+    module.exports[i + '_save'] = spcialOperationSave(connection);
+    module.exports[i + '_find'] = spcialOperationFind(connection);
   }
   
 })
