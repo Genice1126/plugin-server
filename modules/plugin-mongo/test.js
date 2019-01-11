@@ -3,22 +3,12 @@ console.log(typeof "hello world");
 let schema = mongoose.test;
 
 (async function(){
-  let res = await mongoose.genice_all_find('test' , {name : "hello"});
-  console.log(res);
+  // await mongoose.genice_save('yoyo' , {name : "hello" , type : "world" , num : 4});
+  // await mongoose.genice_save('yoyo' , {ty : "hello" , pe : "world"});
+  // await mongoose.genice_update('yoyo' , {name : "hello" , num : 1} , {type : "oooo"});
+  // await mongoose.genice_update('yoyo' , {name : "hello" , num : {$gt : 2}} , {type : "uhy"});
+  // await mongoose.genice_remove('yoyo' , {num : 2});
+  // let res = await mongoose.genice_find('yoyo' , {type : "oooo"});
+  // console.log('res==>' , res);
 })();
-
-
-// schema.create({name : "hello" , location : "world"});
-
-// mongoose.liutao_all_save('yyy' , {a : 1 , b : 1 , c : [{a : 1} , {b : 1}]});
-
-// mongoose.genice_all_save('world' , {name : "helloworld"});
-
-// setTimeout(function(){
-//   (async function(){
-//     console.log('begin');
-//     await mongoose.all_save('world' , {name : "hello world"});
-    
-//   })()
-// },2000)
 

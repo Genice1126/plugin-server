@@ -38,7 +38,7 @@ function spcialOperationSave(connection) {
  * {condition} 查询条件
  * return Array
  */
-function spcialOperationFind(connection){
+function spcialOperationFind(connection) {
   return async(schemaName , condition) => {
     let box = {};
     for(let i in condition) box[i] = MAP_LIST[typeof condition[i]];
@@ -46,6 +46,39 @@ function spcialOperationFind(connection){
     let Model = connection.model(schemaName , schema , schemaName);
     let res = await Model.find(condition);
     return res;
+  }
+}
+
+/**
+ * 不用schema 一次删除多条自定义表中的数据
+ * @param {连接对象} connection 
+ * {schema} 表名
+ * {condition} 查询条件
+ */
+function spcialOperationRemove(connection) {
+  return async(schemaName , condition) => {
+    let box = {};
+    for(let i in condition) box[i] = MAP_LIST[typeof condition[i]];
+    let schema = new mongoose.Schema(box);
+    let Model = connection.model(schemaName , schema , schemaName);
+    await Model.deleteMany(condition);
+    return true;
+  }
+}
+
+/**
+ * 不用schema 一次更新多条自定义表中的数据
+ * @param {连接对象} connection 
+ */
+function spcialOperationUpdate(connection) {
+  return async(schemaName , condition , update) => {
+    let box = {};
+    for(let i in update) box[i] = MAP_LIST[typeof update[i]];
+    let schema = new mongoose.Schema(box);
+    let Model = connection.model(schemaName , schema , schemaName);
+    console.log('model==>', condition, update);
+    await Model.updateMany(condition , {$set : update});
+    return true;
   }
 }
 
@@ -77,6 +110,8 @@ Object.keys(config).forEach(item => {
     }
     module.exports[i + '_save'] = spcialOperationSave(connection);
     module.exports[i + '_find'] = spcialOperationFind(connection);
+    module.exports[i + '_update'] = spcialOperationUpdate(connection);
+    module.exports[i + '_remove'] = spcialOperationRemove(connection);
   }
   
 })
