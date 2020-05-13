@@ -27,7 +27,7 @@ function spcialOperationSave(connection) {
     let Model = connection.model(schemaName , schema , schemaName);
     let res = new Model(model);
     await res.save();
-    return true;
+    return res;
   }
 }
 
@@ -61,7 +61,9 @@ function spcialOperationRemove(connection) {
     for(let i in condition) box[i] = MAP_LIST[typeof condition[i]];
     let schema = new mongoose.Schema(box);
     let Model = connection.model(schemaName , schema , schemaName);
-    await Model.deleteMany(condition);
+    console.log('Model===>' , Model);
+    let info = await Model.deleteOne(condition);
+    console.log('info==>' , info);
     return true;
   }
 }
