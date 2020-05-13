@@ -1,4 +1,5 @@
 const mongoose = require('./index.js');
+const mon = require('mongoose');
 console.log(typeof "hello world");
 let schema = mongoose.test;
 
@@ -96,7 +97,7 @@ let schema = mongoose.test;
 }
 
   console.log('res==>' , res);
-  let info = await mongoose.genice_update('yoyo' , {_id : "5eb604bdbd1089b7b8f4f7be"},{state : 3});
+  let info = await mongoose.genice_find('yoyo' , {_id : mon.Types.ObjectId('5eb604bdbd1089b7b8f4f7be')});
   console.log('info==>' , info);
   // await mongoose.genice_save('yoyo' , {ty : "hello" , pe : "world"});
   // await mongoose.genice_update('yoyo' , {name : "hello" , num : 1} , {type : "oooo"});
